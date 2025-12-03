@@ -61,16 +61,16 @@ This project is a hands-on learning experience that demonstrates deploying a **F
 
 Pods were stuck in the `ContainerCreating` state because the Flannel CNI plugin wasn't running correctly. The critical configuration file was missing, which prevented the network setup for the pods.
 
-* **How I fixed it:** We reapplied the Flannel manifest and confirmed all Flannel pods were healthy and running in the `kube-system` namespace.
+* **How I fixed it:** I reapplied the Flannel manifest and confirmed all Flannel pods were healthy and running in the `kube-system` namespace.
 
 #### **2. ErrImageNeverPull - Container Runtime Mismatch**
 
 Pods failed to pull images with an `ErrImageNeverPull` error, even though the images were present in our local Docker. The root cause was a mismatch between Docker's image store and `containerd`'s. Kubeadm uses `containerd` by default, so images built with Docker were not visible to the Kubernetes cluster.
 
-* **How I fixed it:** We manually imported the Docker images into the `containerd` image store.
+* **How I fixed it:** I manually imported the Docker images into the `containerd` image store.
 
 #### **3. CrashLoopBackOff - PVC Binding Failure**
 
 A PostgreSQL pod repeatedly crashed because its PersistentVolumeClaim (PVC) was stuck in a `Pending` state. The PVC was missing a `storageClassName`, while the corresponding PersistentVolume (PV) required `storageClassName: standard`. This mismatch prevented the PV from binding to the PVC.
 
-* **How I fixed it:** We reinstalled the PostgreSQL Helm chart, explicitly defining the storage class to match the PV's configuration. **When using persistent storage, the `storageClassName` must match exactly between the PV and PVC.**
+* **How I fixed it:** I reinstalled the PostgreSQL Helm chart, explicitly defining the storage class to match the PV's configuration. **When using persistent storage, the `storageClassName` must match exactly between the PV and PVC.**
